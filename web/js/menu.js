@@ -9,7 +9,7 @@
 
     $('#menu a').on('click', function (e) {
         var page = $(this).attr('href');
-        $('#main').load(page);
+        $('#content').load(page);
         
         return false;
     });
