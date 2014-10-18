@@ -5,23 +5,6 @@
  */
 package edu.utd.cs6301.shas;
 
-import edu.utd.cs6301.shas.security.Event;
-import edu.utd.cs6301.shas.security.EventCenter;
-import edu.utd.cs6301.shas.security.EventListenerInterface;
-import edu.utd.cs6301.shas.security.EventManager;
-import edu.utd.cs6301.shas.security.SecurityEventListenerImpl;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.AsyncContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
