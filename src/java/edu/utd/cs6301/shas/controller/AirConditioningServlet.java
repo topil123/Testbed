@@ -12,9 +12,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import edu.utd.cs6301.shas.entity.Sprinkler;
-import edu.utd.cs6301.shas.entity.Sprinklersetting;
-import edu.utd.cs6301.shas.sessionbean.SprinklerFacade;
+import edu.utd.cs6301.shas.entity.Airconditioning;
+import edu.utd.cs6301.shas.entity.Acsetting;
+import edu.utd.cs6301.shas.sessionbean.AirconditioningFacade;
+import edu.utd.cs6301.shas.sessionbean.AirconditioningFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
@@ -30,11 +31,11 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Zheng
  */
-@WebServlet(name = "SprinklerServlet", loadOnStartup = 1, urlPatterns = {"/sprinkler"})
-public class SprinklerServlet extends HttpServlet {
+@WebServlet(name = "AirConditioningServlet", loadOnStartup = 1, urlPatterns = {"/ac"})
+public class AirConditioningServlet extends HttpServlet {
 
     @EJB
-    private SprinklerFacade sprinklerBean;
+    private AirconditioningFacade acBean;
 
     private Gson gson;
 
@@ -42,7 +43,7 @@ public class SprinklerServlet extends HttpServlet {
         gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
 
             public boolean shouldSkipClass(Class<?> clazz) {
-                return (clazz == Sprinklersetting.class);
+                return (clazz == Acsetting.class);
             }
 
             /**
@@ -80,16 +81,16 @@ public class SprinklerServlet extends HttpServlet {
             try{
             switch (action) {
                 case "list":
-                    responseStr=displaySprinkler(request, response);
+                    responseStr=displayAirConditioning();
                     break;
                 case "create":
-                    responseStr=createSprinkler(request, response);
+                    responseStr=createAirConditioning(request);
                     break;
                 case "update":
-                    responseStr=updateSprinkler(request, response);
+                    responseStr=updateAirConditioning(request);
                     break;
                 case "delete":
-                    responseStr=deleteSprinkler(request, response);
+                    responseStr=deleteAirConditioning(request);
                     break;
             }
             response.setContentType("application/json");
@@ -102,51 +103,53 @@ public class SprinklerServlet extends HttpServlet {
         }
     }
 
-    private String displaySprinkler(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<Sprinkler> sprinklers = sprinklerBean.findAll();
+    private String displayAirConditioning() throws IOException {
+        List<Airconditioning> acs = acBean.findAll();
 
-        String listData = gson.toJson(sprinklers);
+        String listData = gson.toJson(acs);
 
         //Return Json in the format required by jTable plugin
         return "{\"Result\":\"OK\",\"Records\":" + listData + "}";
        
     }
 
-    private String createSprinkler(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String id = request.getParameter("sprinklerid");
+    private String createAirConditioning(HttpServletRequest request) throws IOException {
+        String id = request.getParameter("acid");
         String des = request.getParameter("description");
         String mode = request.getParameter("controlmode");
         String status = request.getParameter("status");
-        Sprinkler s = new Sprinkler();
-        s.setSprinklerid(id);
+        int defaultTemp = new Integer(request.getParameter("defaulttemperature"));
+        Airconditioning s = new Airconditioning();
+        s.setAcid(id);
         s.setDescription(des);
         s.setControlmode(mode);
         s.setStatus(status);
-        sprinklerBean.create(s);
+        s.setDefaulttemperature(defaultTemp);
+        acBean.create(s);
         String json = gson.toJson(s);
         
         return "{\"Result\":\"OK\",\"Record\":" + json + "}";
     }
 
-    private String deleteSprinkler(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println(">>>> in delete....");
-        Sprinkler s = new Sprinkler(request.getParameter("sprinklerid"));
-        sprinklerBean.remove(s);
-        System.out.println(">>>> after remove");
+    private String deleteAirConditioning(HttpServletRequest request) {
+        Airconditioning s = acBean.find(request.getParameter("acid"));
+        acBean.remove(s);
         return "{\"Result\":\"OK\"}";
     }
 
-    private String updateSprinkler(HttpServletRequest request, HttpServletResponse response) {
-        String id = request.getParameter("sprinklerid");
+    private String updateAirConditioning(HttpServletRequest request) {
+        String id = request.getParameter("acid");
         String des = request.getParameter("description");
         String mode = request.getParameter("controlmode");
         String status = request.getParameter("status");
-        Sprinkler s = new Sprinkler();
-        s.setSprinklerid(id);
+        int defaultTemp = new Integer(request.getParameter("defaulttemperature"));
+        Airconditioning s = new Airconditioning();
+        s.setAcid(id);
         s.setDescription(des);
         s.setControlmode(mode);
         s.setStatus(status);
-        sprinklerBean.edit(s);
+        s.setDefaulttemperature(defaultTemp);
+        acBean.edit(s);
         String json = gson.toJson(s);
         // Return Json in the format required by jTable plugin
         return "{\"Result\":\"OK\",\"Record\":" + json + "}";

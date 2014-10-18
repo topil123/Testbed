@@ -12,14 +12,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import edu.utd.cs6301.shas.entity.Sprinkler;
-import edu.utd.cs6301.shas.entity.Sprinklersetting;
-import edu.utd.cs6301.shas.sessionbean.SprinklerFacade;
+import edu.utd.cs6301.shas.entity.Detector;
+import edu.utd.cs6301.shas.sessionbean.DetectorFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
+import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,11 +31,11 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Zheng
  */
-@WebServlet(name = "SprinklerServlet", loadOnStartup = 1, urlPatterns = {"/sprinkler"})
-public class SprinklerServlet extends HttpServlet {
+@WebServlet(name = "DetectorServlet", loadOnStartup = 1, urlPatterns = {"/detector"}, asyncSupported=true)
+public class DetectorServlet extends HttpServlet {
 
     @EJB
-    private SprinklerFacade sprinklerBean;
+    private DetectorFacade detectorBean;
 
     private Gson gson;
 
@@ -42,7 +43,7 @@ public class SprinklerServlet extends HttpServlet {
         gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
 
             public boolean shouldSkipClass(Class<?> clazz) {
-                return (clazz == Sprinklersetting.class);
+                return false;
             }
 
             /**
@@ -70,83 +71,91 @@ public class SprinklerServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException
-             {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        
         if (request.getParameter("action") != null) {
             String action = (String) request.getParameter("action");
             String responseStr = null;
-            
-            try{
-            switch (action) {
-                case "list":
-                    responseStr=displaySprinkler(request, response);
-                    break;
-                case "create":
-                    responseStr=createSprinkler(request, response);
-                    break;
-                case "update":
-                    responseStr=updateSprinkler(request, response);
-                    break;
-                case "delete":
-                    responseStr=deleteSprinkler(request, response);
-                    break;
-            }
-            response.setContentType("application/json");
-            response.getWriter().print(responseStr);
-            }catch (Exception ex) {
-                           String error="{\"Result\":\"ERROR\",\"Message\":"+ex.getStackTrace()+"}";
-                           response.getWriter().print(error);
-                           System.err.println(ex.getMessage());
+
+            try {
+                switch (action) {
+                    case "list":
+                        responseStr = displayDetector(request);
+                        break;
+                    case "create":
+                        responseStr = createDetector(request);
+                        break;
+                    case "update":
+                        responseStr = updateDetector(request);
+                        break;
+                    case "delete":
+                        responseStr = deleteDetector(request);
+                        break;
+                }
+                response.setContentType("application/json");
+                response.getWriter().print(responseStr);
+//                System.out.println(">>> reponse has been sent out...");
+//                registerAsyncContext(request, response);
+//                System.out.println(">>> process finished.");
+            } catch (Exception ex) {
+                String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getStackTrace() + "}";
+                response.getWriter().print(error);
+                System.err.println(ex.getMessage());
             }
         }
     }
+    
+    private void registerAsyncContext(HttpServletRequest request, HttpServletResponse response){
+        //register this servlet as a observer to show the event.
+        AsyncContext aCtx = request.startAsync(request, response); 
+        Set<AsyncContext> eventObservers 
+                = (Set<AsyncContext>) request.getServletContext().getAttribute("eventObserver");
+        System.out.println(">>>> " + eventObservers.size());
+        eventObservers.add(aCtx);
+        request.getServletContext().setAttribute("eventObserver", eventObservers);
+    }
 
-    private String displaySprinkler(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<Sprinkler> sprinklers = sprinklerBean.findAll();
+    private String displayDetector(HttpServletRequest request) throws IOException {
+        List<Detector> sprinklers = detectorBean.findAll();
 
         String listData = gson.toJson(sprinklers);
 
         //Return Json in the format required by jTable plugin
         return "{\"Result\":\"OK\",\"Records\":" + listData + "}";
-       
+
     }
 
-    private String createSprinkler(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String id = request.getParameter("sprinklerid");
+    private String createDetector(HttpServletRequest request) throws IOException {
+        String id = request.getParameter("detectorid");
         String des = request.getParameter("description");
         String mode = request.getParameter("controlmode");
         String status = request.getParameter("status");
-        Sprinkler s = new Sprinkler();
-        s.setSprinklerid(id);
+        Detector s = new Detector();
+        s.setDetectorid(id);
         s.setDescription(des);
-        s.setControlmode(mode);
         s.setStatus(status);
-        sprinklerBean.create(s);
+        detectorBean.create(s);
         String json = gson.toJson(s);
-        
+
         return "{\"Result\":\"OK\",\"Record\":" + json + "}";
     }
 
-    private String deleteSprinkler(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println(">>>> in delete....");
-        Sprinkler s = new Sprinkler(request.getParameter("sprinklerid"));
-        sprinklerBean.remove(s);
-        System.out.println(">>>> after remove");
+    private String deleteDetector(HttpServletRequest request) {
+        Detector s = detectorBean.find(request.getParameter("detectorid"));
+        detectorBean.remove(s);
         return "{\"Result\":\"OK\"}";
     }
 
-    private String updateSprinkler(HttpServletRequest request, HttpServletResponse response) {
-        String id = request.getParameter("sprinklerid");
+    private String updateDetector(HttpServletRequest request) {
+        String id = request.getParameter("detectorid");
         String des = request.getParameter("description");
-        String mode = request.getParameter("controlmode");
         String status = request.getParameter("status");
-        Sprinkler s = new Sprinkler();
-        s.setSprinklerid(id);
+        Detector s = new Detector();
+        s.setDetectorid(id);
         s.setDescription(des);
-        s.setControlmode(mode);
         s.setStatus(status);
-        sprinklerBean.edit(s);
+        detectorBean.edit(s);
         String json = gson.toJson(s);
         // Return Json in the format required by jTable plugin
         return "{\"Result\":\"OK\",\"Record\":" + json + "}";

@@ -33,10 +33,10 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Airconditioning.findByStatus", query = "SELECT a FROM Airconditioning a WHERE a.status = :status"),
     @NamedQuery(name = "Airconditioning.findByDefaulttemperature", query = "SELECT a FROM Airconditioning a WHERE a.defaulttemperature = :defaulttemperature")})
 public class Airconditioning implements Serializable {
+    
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 15)
     @Column(name = "ACID")
     private String acid;
@@ -50,7 +50,9 @@ public class Airconditioning implements Serializable {
     @Column(name = "STATUS")
     private String status;
     @Column(name = "DEFAULTTEMPERATURE")
-    private BigInteger defaulttemperature;
+    private Integer defaulttemperature;
+    @Column(name = "CURRENTTEMPERATURE")
+    private Integer currenttemperature;
     @OneToMany(mappedBy = "acid")
     private Collection<Acsetting> acsettingCollection;
 
@@ -93,11 +95,11 @@ public class Airconditioning implements Serializable {
         this.status = status;
     }
 
-    public BigInteger getDefaulttemperature() {
+    public Integer getDefaulttemperature() {
         return defaulttemperature;
     }
 
-    public void setDefaulttemperature(BigInteger defaulttemperature) {
+    public void setDefaulttemperature(Integer defaulttemperature) {
         this.defaulttemperature = defaulttemperature;
     }
 
@@ -132,6 +134,14 @@ public class Airconditioning implements Serializable {
     @Override
     public String toString() {
         return "edu.utd.cs6301.shas.entity.Airconditioning[ acid=" + acid + " ]";
+    }
+
+    public Integer getCurrenttemperature() {
+        return currenttemperature;
+    }
+
+    public void setCurrenttemperature(Integer currenttemperature) {
+        this.currenttemperature = currenttemperature;
     }
     
 }

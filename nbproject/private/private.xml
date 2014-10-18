@@ -3,12 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/NetBeansProjects/Testbed/web/css/template.css</file>
+            <file>file:/D:/NetBeansProjects/Testbed/web/WEB-INF/web.xml</file>
+            <file>file:/D:/NetBeansProjects/Testbed/src/java/edu/utd/cs6301/shas/sessionbean/SecurityEventBean.java</file>
+            <file>file:/D:/NetBeansProjects/Testbed/web/js/noty/packaged/jquery.noty.packaged.js</file>
+            <file>file:/D:/NetBeansProjects/Testbed/src/java/edu/utd/cs6301/shas/security/Event.java</file>
+            <file>file:/D:/NetBeansProjects/Testbed/src/java/edu/utd/cs6301/shas/controller/SecuritySimulationServlet.java</file>
             <file>file:/D:/NetBeansProjects/Testbed/web/index.html</file>
+            <file>file:/D:/NetBeansProjects/Testbed/web/ac.jsp</file>
             <file>file:/D:/NetBeansProjects/Testbed/web/sprinkler.jsp</file>
-            <file>file:/D:/NetBeansProjects/Testbed/web/js/menu.js</file>
-            <file>file:/D:/NetBeansProjects/Testbed/web/css/menu.css</file>
+            <file>file:/D:/NetBeansProjects/Testbed/web/detector.jsp</file>
+            <file>file:/D:/NetBeansProjects/Testbed/web/js/noty/themes/default.js</file>
+            <file>file:/D:/NetBeansProjects/Testbed/src/java/edu/utd/cs6301/shas/ContextListener.java</file>
             <file>file:/D:/NetBeansProjects/Testbed/web/security.jsp</file>
+            <file>file:/D:/NetBeansProjects/Testbed/src/java/edu/utd/cs6301/shas/controller/SecurityEventServlet.java</file>
         </group>
     </open-files>
 </project-private>

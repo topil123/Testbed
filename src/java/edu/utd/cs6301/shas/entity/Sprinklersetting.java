@@ -6,18 +6,17 @@
 package edu.utd.cs6301.shas.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -36,11 +35,10 @@ public class Sprinklersetting implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @Basic(optional = false)
     @Column(name = "SETTINGID")
-    private BigDecimal settingid;
+    private int settingid;
     @Column(name = "DAYOFWEEK")
-    private BigInteger dayofweek;
+    private int dayofweek;
     @Size(max = 20)
     @Column(name = "STARTTIME")
     private String starttime;
@@ -54,23 +52,23 @@ public class Sprinklersetting implements Serializable {
     public Sprinklersetting() {
     }
 
-    public Sprinklersetting(BigDecimal settingid) {
+    public Sprinklersetting(int settingid) {
         this.settingid = settingid;
     }
 
-    public BigDecimal getSettingid() {
+    public int getSettingid() {
         return settingid;
     }
 
-    public void setSettingid(BigDecimal settingid) {
+    public void setSettingid(int settingid) {
         this.settingid = settingid;
     }
 
-    public BigInteger getDayofweek() {
+    public int getDayofweek() {
         return dayofweek;
     }
 
-    public void setDayofweek(BigInteger dayofweek) {
+    public void setDayofweek(int dayofweek) {
         this.dayofweek = dayofweek;
     }
 
@@ -101,7 +99,7 @@ public class Sprinklersetting implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (settingid != null ? settingid.hashCode() : 0);
+        hash += settingid ;
         return hash;
     }
 
@@ -112,7 +110,7 @@ public class Sprinklersetting implements Serializable {
             return false;
         }
         Sprinklersetting other = (Sprinklersetting) object;
-        if ((this.settingid == null && other.settingid != null) || (this.settingid != null && !this.settingid.equals(other.settingid))) {
+        if (this.settingid !=other.settingid) {
             return false;
         }
         return true;

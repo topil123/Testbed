@@ -11,6 +11,8 @@ create table AirConditioning(
    description varchar(50),
    controlmode varchar(10),
    status varchar(10),
+   defaulttemperature number,
+   currenttemperature number,
   constraint pk_ac primary key(acid)
 );
 

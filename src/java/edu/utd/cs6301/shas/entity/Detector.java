@@ -31,7 +31,6 @@ public class Detector implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 15)
     @Column(name = "DETECTORID")
     private String detectorid;

@@ -6,8 +6,10 @@
 package edu.utd.cs6301.shas.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -48,10 +50,9 @@ public class Sprinkler implements Serializable {
     @Size(max = 10)
     @Column(name = "STATUS")
     private String status;
-    @OneToMany(mappedBy = "sprinklerid", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "sprinklerid", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OrderBy("dayofweek ASC")
-    private Collection<Sprinklersetting> sprinklersettingCollection;
-
+    private Collection<Sprinklersetting> sprinklersettingCollection = new ArrayList<>();
     public Sprinkler() {
     }
 

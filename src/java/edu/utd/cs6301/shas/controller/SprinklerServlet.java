@@ -80,16 +80,16 @@ public class SprinklerServlet extends HttpServlet {
             try{
             switch (action) {
                 case "list":
-                    responseStr=displaySprinkler(request, response);
+                    responseStr=displaySprinkler();
                     break;
                 case "create":
-                    responseStr=createSprinkler(request, response);
+                    responseStr=createSprinkler(request);
                     break;
                 case "update":
-                    responseStr=updateSprinkler(request, response);
+                    responseStr=updateSprinkler(request);
                     break;
                 case "delete":
-                    responseStr=deleteSprinkler(request, response);
+                    responseStr=deleteSprinkler(request);
                     break;
             }
             response.setContentType("application/json");
@@ -102,7 +102,7 @@ public class SprinklerServlet extends HttpServlet {
         }
     }
 
-    private String displaySprinkler(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private String displaySprinkler() throws IOException {
         List<Sprinkler> sprinklers = sprinklerBean.findAll();
 
         String listData = gson.toJson(sprinklers);
@@ -112,7 +112,7 @@ public class SprinklerServlet extends HttpServlet {
        
     }
 
-    private String createSprinkler(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private String createSprinkler(HttpServletRequest request) throws IOException {
         String id = request.getParameter("sprinklerid");
         String des = request.getParameter("description");
         String mode = request.getParameter("controlmode");
@@ -128,15 +128,13 @@ public class SprinklerServlet extends HttpServlet {
         return "{\"Result\":\"OK\",\"Record\":" + json + "}";
     }
 
-    private String deleteSprinkler(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println(">>>> in delete....");
-        Sprinkler s = new Sprinkler(request.getParameter("sprinklerid"));
+    private String deleteSprinkler(HttpServletRequest request) {
+        Sprinkler s = sprinklerBean.find(request.getParameter("sprinklerid"));
         sprinklerBean.remove(s);
-        System.out.println(">>>> after remove");
         return "{\"Result\":\"OK\"}";
     }
 
-    private String updateSprinkler(HttpServletRequest request, HttpServletResponse response) {
+    private String updateSprinkler(HttpServletRequest request) {
         String id = request.getParameter("sprinklerid");
         String des = request.getParameter("description");
         String mode = request.getParameter("controlmode");

@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!-- Include one of jTable styles. -->
-        <link href="css/jtable/themes/metro/blue/jtable.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/jtable/themes/lightcolor/blue/jtable.min.css" rel="stylesheet" type="text/css" />
 
         <!-- Include script file. -->
 
@@ -27,8 +27,8 @@
             $(document).ready(function () {
                 $('#SprinklerContainer').jtable({
                     title: 'Sprinklers',
-                    paging: true,
-                    sorting: true,
+//                    paging: true,
+//                    sorting: true,
                     openChildAsAccordion: true,
                     actions: {
                         listAction: 'sprinkler?action=list',
@@ -55,9 +55,9 @@
                                                     title: sprinklerData.record.sprinklerid + ' - Settings',
                                                 actions: {
                                                     listAction: 'sprinklerSetting?action=list&sprinklerid=' + sprinklerData.record.sprinklerid,
-                                                    deleteAction: 'sprinklerSetting?action=create',
-                                                    updateAction: 'sprinklerSetting?action=update',
-                                                    createAction: 'sprinklerSetting?action=delete'
+                                                    createAction: 'sprinklerSetting?action=create',
+                                                    updateAction: 'sprinklerSetting?action=update&sprinklerid=' + sprinklerData.record.sprinklerid,
+                                                    deleteAction: 'sprinklerSetting?action=delete'
                                                 },
                                                 fields: {
                                                     sprinklerid: {
@@ -97,6 +97,8 @@
                         },
                         sprinklerid: {
                             title: 'ID',
+                            key: true,
+                            create: true,
                             width: '20%'
                         },
                         description: {

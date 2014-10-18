@@ -38,13 +38,12 @@ public class Acsetting implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "SETTINGID")
-    private BigDecimal settingid;
+    private Integer settingid;
     @Column(name = "TEMPERATURE")
-    private BigInteger temperature;
+    private Integer temperature;
     @Column(name = "DAYOFWEEK")
-    private BigInteger dayofweek;
+    private Integer dayofweek;
     @Size(max = 10)
     @Column(name = "STARTTIME")
     private String starttime;
@@ -58,31 +57,31 @@ public class Acsetting implements Serializable {
     public Acsetting() {
     }
 
-    public Acsetting(BigDecimal settingid) {
+    public Acsetting(Integer settingid) {
         this.settingid = settingid;
     }
 
-    public BigDecimal getSettingid() {
+    public Integer getSettingid() {
         return settingid;
     }
 
-    public void setSettingid(BigDecimal settingid) {
+    public void setSettingid(Integer settingid) {
         this.settingid = settingid;
     }
 
-    public BigInteger getTemperature() {
+    public Integer getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(BigInteger temperature) {
+    public void setTemperature(Integer temperature) {
         this.temperature = temperature;
     }
 
-    public BigInteger getDayofweek() {
+    public Integer getDayofweek() {
         return dayofweek;
     }
 
-    public void setDayofweek(BigInteger dayofweek) {
+    public void setDayofweek(Integer dayofweek) {
         this.dayofweek = dayofweek;
     }
 

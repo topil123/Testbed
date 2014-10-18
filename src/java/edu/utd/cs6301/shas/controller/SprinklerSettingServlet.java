@@ -15,6 +15,7 @@ import edu.utd.cs6301.shas.sessionbean.SprinklerFacade;
 import edu.utd.cs6301.shas.sessionbean.SprinklersettingFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
@@ -78,16 +79,16 @@ public class SprinklerSettingServlet extends HttpServlet {
             try{
             switch (action) {
                 case "list":
-                    responseStr=displaySprinklerSetting(request, response);
+                    responseStr=displaySprinklerSetting(request);
                     break;
                 case "create":
-                    responseStr=createSprinklerSetting(request, response);
+                    responseStr=createSprinklerSetting(request);
                     break;
                 case "update":
-                    responseStr=updateSprinklerSetting(request, response);
+                    responseStr=updateSprinklerSetting(request);
                     break;
                 case "delete":
-                    responseStr=deleteSprinklerSetting(request, response);
+                    responseStr=deleteSprinklerSetting(request);
                     break;
             }
             response.setContentType("application/json");
@@ -100,29 +101,54 @@ public class SprinklerSettingServlet extends HttpServlet {
         }
     }
     
-     private String displaySprinklerSetting(HttpServletRequest request, HttpServletResponse response) throws IOException {
+     private String displaySprinklerSetting(HttpServletRequest request) throws IOException {
          
          String sprinklerId = request.getParameter("sprinklerid");
-         System.out.println(">>>>>>> " +sprinklerId);
          Collection<Sprinklersetting> settings = sprinklerBean.find(sprinklerId).getSprinklersettingCollection();
-         System.out.println(">>>>>" + settings);
         String listData = gson.toJson(settings);
-         System.out.println(">>>>listdata " + listData);
         //Return Json in the format required by jTable plugin
         return "{\"Result\":\"OK\",\"Records\":" + listData + "}";
        
     }
      
-     private String createSprinklerSetting(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        return null;
+     private String createSprinklerSetting(HttpServletRequest request) throws IOException {
+         
+         String sprinklerid = request.getParameter("sprinklerid");
+         Sprinkler sprinkler = sprinklerBean.find(sprinklerid);
+         String dayofweek = request.getParameter("dayofweek");
+         String startime = request.getParameter("starttime");
+         String endtime = request.getParameter("endtime");
+         Sprinklersetting setting = new Sprinklersetting();
+         setting.setDayofweek(new Integer(dayofweek));
+         setting.setStarttime(startime);
+         setting.setEndtime(endtime);
+         setting.setSprinklerid(sprinkler);
+         sprinklerSettingBean.create(setting);
+        String json = gson.toJson(setting);
+        
+        return "{\"Result\":\"OK\",\"Record\":" + json + "}";
     }
 
-    private String deleteSprinklerSetting(HttpServletRequest request, HttpServletResponse response) {
-        return null;
+    private String deleteSprinklerSetting(HttpServletRequest request) {
+        String settingid = request.getParameter("settingid");
+        Sprinklersetting setting = sprinklerSettingBean.find(new Integer(settingid));
+        sprinklerSettingBean.remove(setting);
+        return "{\"Result\":\"OK\"}";
     }
 
-    private String updateSprinklerSetting(HttpServletRequest request, HttpServletResponse response) {
-        return null;
+    private String updateSprinklerSetting(HttpServletRequest request) {
+        String settingid = request.getParameter("settingid");
+        String sprinklerid = request.getParameter("sprinklerid");
+         Sprinkler sprinkler = sprinklerBean.find(sprinklerid);
+        Sprinklersetting setting = new Sprinklersetting();
+        setting.setSettingid(new Integer(settingid));
+        setting.setDayofweek(new Integer(request.getParameter("dayofweek")));
+        setting.setStarttime(request.getParameter("starttime"));
+        setting.setEndtime(request.getParameter("endtime"));
+        setting.setSprinklerid(sprinkler);
+        sprinklerSettingBean.edit(setting);
+        String json = gson.toJson(setting);
+        return "{\"Result\":\"OK\",\"Record\":" + json + "}";
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

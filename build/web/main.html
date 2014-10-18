@@ -20,21 +20,19 @@ and open the template in the editor.
 
 
 
-
     </head>
     <body>
         <div id="main">
             <div id="header">
-                <h3>This is the header.</h3>
+                </br>
+                <h3>Welcome to the SHAS system</h3>
             </div>
             <div id="menu">
                 <h3>Security</h3>
                 <div>
                     <ul>
-                        <li class="ui-state-disabled"><a href='#'><span>Door</span></a></li>
-                        <li class="ui-state-disabled"><a href='#'><span>Window</span></a></li>
-                        <li class="ui-state-disabled"><a href='#'><span>CO</span></a></li>
-                        <li class="ui-state-disabled"><a href='#'><span>Fire</span></a></li>
+                        <li><a href='detector.jsp'><span>Detectors</span></a></li>
+                        <li><a href='security.jsp'><span>Monitor Events</span></a></li>
                     </ul>
                 </div>
                 <h3>Water</h3>
@@ -48,25 +46,34 @@ and open the template in the editor.
                 <h3>Electricity</h3>
                 <div>
                     <ul>
-                        <li class="ui-state-disabled"><a href='#'><span>HV/AC</span></a></li>
-                        <li class="ui-state-disabled"><a href='#'><span>Light</span></a></li>
-                        <li class="ui-state-disabled"><a href='#'><span>Report</span></a></li>
+                        <li><a href='ac.jsp'><span>HV/AC</span></a></li>
+                        <li class="ui-state-disabled"><a href=''><span>Light</span></a></li>
+                        <li class="ui-state-disabled"><a href=''><span>Report</span></a></li>
 
                     </ul>
                 </div>
+                <h3>Simulators</h3>
+                <div>
+                    <ul>
+                        <li><a href='SecuritySimulator'><span>Security</span></a></li>
+                        <li class="ui-state-disabled"><a href=''><span>Environment</span></a></li>
 
+                    </ul>
+                </div>
             </div>
 
             <div id="content">
-                Welcome to the SHAS Testbed
+
             </div>
 
             <div id="footer">
-                <h3>This is the footer.</h3>
+                <!--<h3>This is the footer.</h3>-->
             </div>
         </div>
 
 
         <script src="js/menu.js"></script>
+        <!--script src="js/notification.js"></script-->
+
     </body>
 </html>

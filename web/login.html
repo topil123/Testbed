@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Smart Home Automation System Login</title>
+        <link rel="stylesheet" href="css/login_normalize.css">
+        <link rel="stylesheet" href="css/login_style.css">
+        <script>
+            function validateLogin() {
+                var username = document.login.username.value;
+                var pwd = document.login.password.value;
+                if ((username == 'admin') && (pwd == 'password')) {
+                    window.location = "main.html";
+                    return false;
+                }
+                else {
+                    document.login.msg.value = "UserName or Password invalid.";
+                }
+            }
+
+        </script>
+    </head>
+    <body>
+        <div class="title">
+            <div>Smart Home Automation System</div>
+        </div>
+        <section class="loginform cf">
+            <form name="login" action="index_submit" method="get" accept-charset="utf-8">
+                <ul>
+                    <li>
+                        <label for="username">UserName</label>
+                        <input type="text" name="username" placeholder="username" required>
+                    </li>
+                    <li>
+                        <label for="password">Password</label>
+                        <input type="password" name="password" placeholder="password" required></li>
+                    <li>
+                        <input type="button" value="Login" onClick="validateLogin();">
+                    </li>
+                </ul>
+                <p id='msg' class="loginerror"></p>
+                    
+                
+            </form>
+        </section>
+    </body>
+</html>

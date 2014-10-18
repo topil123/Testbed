@@ -9,40 +9,47 @@ and open the template in the editor.
 */
 body,
 html {
-    font-family: Arial, Helvetica, sans-serif;
-    width: 850px;
+    background: url('../images/shasbackground.png'); 
+    background-size: 100%;
+    font-family: sans-serif;
     text-align: center;
-    margin: 20px auto;
+    font-size: 15pt;
 }
 
 #main {
-    //background: #eee
-    height: 400px;
+    margin: 20px auto;
+    width: 850px;
+    height: 650px;
+    opacity: 0.9;
+    filter: alpha(opacity=95);
+    border-style: solid;
+    border-color:#092f55;
+    background-color:window
 }
 
 #header {
-    height: 150px;
-    background: #aaa;
+    height: 180px;
+   
 }
 
 #menu {
-    height: 400px;
-    width: 200px;
+    /*top: 30px;*/ 
+    height: 100px;
+    width: 180px;
     float:left;
-    background: #ccc;
+    border-style: solid;
+    border-color:#092f55;
 }
 
 #content {
     height: 400px;
     width: 650px;
-    margin-left:  200px;
-    background: #eee;
+    margin-left:  180px;
 
 }
 #footer {
     height: 60px;
     clear:both;
-    background: #aaa;
 }
 
 
