@@ -5,6 +5,9 @@
  */
 package edu.utd.cs6301.shas;
 
+import edu.utd.cs6301.shas.schedule.SprinklerManager;
+import java.util.Calendar;
+import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -16,6 +19,9 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 public class ContextListener implements ServletContextListener {
 
+    @Inject
+    SprinklerManager sprinklerManager;
+    
     @Override
     public void contextInitialized(ServletContextEvent sce) {
 //        System.out.println(">>>>>> we are ready...");
@@ -25,7 +31,7 @@ public class ContextListener implements ServletContextListener {
 //        sce.getServletContext().setAttribute("eventQueue", eventQ);
 
 //        new Thread(new EventManager(sce.getServletContext())).start(); //START DAEMON
-        
+        Calendar.getInstance().setFirstDayOfWeek(Calendar.MONDAY);
     }
 
     @Override

@@ -3,6 +3,6 @@
   <persistence-unit name="TestbedPU" transaction-type="JTA">
     <jta-data-source>jdbc/shasds</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties/>
+    
   </persistence-unit>
 </persistence>

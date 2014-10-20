@@ -57,7 +57,7 @@
                                                     listAction: 'sprinklerSetting?action=list&sprinklerid=' + sprinklerData.record.sprinklerid,
                                                     createAction: 'sprinklerSetting?action=create',
                                                     updateAction: 'sprinklerSetting?action=update&sprinklerid=' + sprinklerData.record.sprinklerid,
-                                                    deleteAction: 'sprinklerSetting?action=delete'
+                                                    deleteAction: 'sprinklerSetting?action=delete&sprinklerid=' + sprinklerData.record.sprinklerid,
                                                 },
                                                 fields: {
                                                     sprinklerid: {
@@ -73,8 +73,8 @@
                                                     dayofweek: {
                                                         title: 'Day of Week',
                                                         width: '20%',
-                                                        options: {'1': 'Mon', '2': 'Tue', '3': 'Wed', '4': 'Thur', '5': 'Fri', 
-                                                                  '6': 'Sat', '7': 'Sun'}
+                                                        options: {'2': 'Mon', '3': 'Tue', '4': 'Wed', '5': 'Thur', '6': 'Fri', 
+                                                                  '7': 'Sat', '1': 'Sun'}
                                                     },
                                                     starttime: {
                                                         title: 'Start Time',

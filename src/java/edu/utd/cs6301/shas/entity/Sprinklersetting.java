@@ -7,6 +7,7 @@ package edu.utd.cs6301.shas.entity;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -46,7 +47,7 @@ public class Sprinklersetting implements Serializable {
     @Column(name = "ENDTIME")
     private String endtime;
     @JoinColumn(name = "SPRINKLERID", referencedColumnName = "SPRINKLERID")
-    @ManyToOne
+    @ManyToOne()
     private Sprinkler sprinklerid;
 
     public Sprinklersetting() {
@@ -118,7 +119,7 @@ public class Sprinklersetting implements Serializable {
 
     @Override
     public String toString() {
-        return "[ dayofweek =" + dayofweek + " start: " + starttime + " end: " + endtime + " ]";
+        return "[ settingid: " + settingid+ " dayofweek =" + dayofweek + " start: " + starttime + " end: " + endtime + " ]";
     }
     
 }

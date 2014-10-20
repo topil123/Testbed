@@ -14,12 +14,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import edu.utd.cs6301.shas.entity.Sprinkler;
 import edu.utd.cs6301.shas.entity.Sprinklersetting;
+import edu.utd.cs6301.shas.schedule.SprinklerManager;
 import edu.utd.cs6301.shas.sessionbean.SprinklerFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,6 +38,8 @@ public class SprinklerServlet extends HttpServlet {
     @EJB
     private SprinklerFacade sprinklerBean;
 
+    @Inject 
+    private SprinklerManager sprinklerManager;
     private Gson gson;
 
     public void init() throws ServletException {
@@ -145,6 +149,7 @@ public class SprinklerServlet extends HttpServlet {
         s.setControlmode(mode);
         s.setStatus(status);
         sprinklerBean.edit(s);
+        sprinklerManager.updateSprinkler(s);
         String json = gson.toJson(s);
         // Return Json in the format required by jTable plugin
         return "{\"Result\":\"OK\",\"Record\":" + json + "}";

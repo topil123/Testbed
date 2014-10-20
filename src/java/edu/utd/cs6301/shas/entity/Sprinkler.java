@@ -8,6 +8,7 @@ package edu.utd.cs6301.shas.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -50,9 +52,9 @@ public class Sprinkler implements Serializable {
     @Size(max = 10)
     @Column(name = "STATUS")
     private String status;
-    @OneToMany(mappedBy = "sprinklerid", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "sprinklerid", fetch = FetchType.EAGER)
     @OrderBy("dayofweek ASC")
-    private Collection<Sprinklersetting> sprinklersettingCollection = new ArrayList<>();
+    private List<Sprinklersetting> sprinklersettingCollection = new ArrayList<>();
     public Sprinkler() {
     }
 
@@ -92,11 +94,11 @@ public class Sprinkler implements Serializable {
         this.status = status;
     }
 
-    public Collection<Sprinklersetting> getSprinklersettingCollection() {
+    public List<Sprinklersetting> getSprinklersettingCollection() {
         return sprinklersettingCollection;
     }
 
-    public void setSprinklersettingCollection(Collection<Sprinklersetting> sprinklersettingCollection) {
+    public void setSprinklersettingCollection(List<Sprinklersetting> sprinklersettingCollection) {
         this.sprinklersettingCollection = sprinklersettingCollection;
     }
 

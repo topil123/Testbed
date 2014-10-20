@@ -11,14 +11,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import edu.utd.cs6301.shas.entity.Sprinkler;
 import edu.utd.cs6301.shas.entity.Sprinklersetting;
+import edu.utd.cs6301.shas.schedule.SprinklerManager;
 import edu.utd.cs6301.shas.sessionbean.SprinklerFacade;
 import edu.utd.cs6301.shas.sessionbean.SprinklersettingFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,6 +40,9 @@ public class SprinklerSettingServlet extends HttpServlet {
     @EJB
     private SprinklerFacade sprinklerBean;
 
+    @Inject 
+    private SprinklerManager sprinklerManager;
+    
     private Gson gson;
 
     public void init() throws ServletException {
@@ -96,7 +102,7 @@ public class SprinklerSettingServlet extends HttpServlet {
             }catch (Exception ex) {
                            String error="{\"Result\":\"ERROR\",\"Message\":"+ex.getStackTrace()+"}";
                            response.getWriter().print(error);
-                           System.err.println(ex.getMessage());
+                           ex.printStackTrace();
             }
         }
     }
@@ -106,6 +112,7 @@ public class SprinklerSettingServlet extends HttpServlet {
          String sprinklerId = request.getParameter("sprinklerid");
          Collection<Sprinklersetting> settings = sprinklerBean.find(sprinklerId).getSprinklersettingCollection();
         String listData = gson.toJson(settings);
+         System.out.println(">>>>>>> %%%%% " + listData);
         //Return Json in the format required by jTable plugin
         return "{\"Result\":\"OK\",\"Records\":" + listData + "}";
        
@@ -123,30 +130,59 @@ public class SprinklerSettingServlet extends HttpServlet {
          setting.setStarttime(startime);
          setting.setEndtime(endtime);
          setting.setSprinklerid(sprinkler);
-         sprinklerSettingBean.create(setting);
+         sprinkler.getSprinklersettingCollection().add(setting);
+         sprinklerBean.edit(sprinkler);
+//         sprinklerSettingBean.create(setting);
+         sprinklerManager.addSetting(setting);
+         
         String json = gson.toJson(setting);
         
         return "{\"Result\":\"OK\",\"Record\":" + json + "}";
     }
 
     private String deleteSprinklerSetting(HttpServletRequest request) {
+        String sprinklerid = request.getParameter("sprinklerid");
+        Sprinkler sprinkler = sprinklerBean.find(sprinklerid);
         String settingid = request.getParameter("settingid");
+        System.out.println("?????? " + settingid);
         Sprinklersetting setting = sprinklerSettingBean.find(new Integer(settingid));
+        List<Sprinklersetting> list = sprinkler.getSprinklersettingCollection();
+        Iterator<Sprinklersetting> it = list.iterator();
+        while(it.hasNext()){
+            Sprinklersetting tmp = it.next();
+            if(tmp.getSettingid() == new Integer(settingid)){
+                it.remove();
+                break;
+            }
+        }
+        sprinklerBean.edit(sprinkler);
         sprinklerSettingBean.remove(setting);
+        sprinklerManager.removeSetting(setting);
         return "{\"Result\":\"OK\"}";
     }
 
     private String updateSprinklerSetting(HttpServletRequest request) {
         String settingid = request.getParameter("settingid");
         String sprinklerid = request.getParameter("sprinklerid");
-         Sprinkler sprinkler = sprinklerBean.find(sprinklerid);
+        Sprinkler sprinkler = sprinklerBean.find(sprinklerid);
         Sprinklersetting setting = new Sprinklersetting();
         setting.setSettingid(new Integer(settingid));
         setting.setDayofweek(new Integer(request.getParameter("dayofweek")));
         setting.setStarttime(request.getParameter("starttime"));
+        System.out.println(">>>> starttime" + request.getParameter("starttime"));
         setting.setEndtime(request.getParameter("endtime"));
         setting.setSprinklerid(sprinkler);
+        int index = 0;
+        for(Sprinklersetting tmp : sprinkler.getSprinklersettingCollection()){
+            if(tmp.getSettingid() == new Integer(settingid)){
+                break;
+            }
+            index++;
+        }
+        sprinkler.getSprinklersettingCollection().set(index, setting);
+        sprinklerBean.edit(sprinkler);
         sprinklerSettingBean.edit(setting);
+        sprinklerManager.updateSetting(setting);
         String json = gson.toJson(setting);
         return "{\"Result\":\"OK\",\"Record\":" + json + "}";
     }
